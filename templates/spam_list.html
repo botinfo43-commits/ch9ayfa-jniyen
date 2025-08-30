@@ -1,0 +1,560 @@
+{% extends "base.html" %}
+
+{% block title %}Free Fire Spam List - Spam Control Panel{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Header Card -->
+        <div class="card mb-4 glow">
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-radar" style="font-size: 5rem; color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color); animation: float 3s ease-in-out infinite;"></i>
+                </div>
+                <h1 class="mt-3 mb-4" style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    📡 MISSION CONTROL CENTER 📡
+                </h1>
+                <p class="mb-4" style="font-size: 1.3rem; color: var(--light-color);">
+                    🎯 Real-time monitoring of all Free Fire spam operations<br>
+                    <span style="color: var(--accent-color);">Command & Control Dashboard</span>
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <div class="badge fs-6 px-4 py-2" style="background: linear-gradient(135deg, var(--success-color), #00a085);">
+                        <i class="bi bi-activity"></i> LIVE MONITORING
+                    </div>
+                    <div class="badge fs-6 px-4 py-2" style="background: linear-gradient(135deg, var(--info-color), #2f3542);">
+                        <i class="bi bi-shield-check"></i> SECURE CONTROL
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card" style="background: linear-gradient(135deg, var(--success-color), #00a085); border: 2px solid var(--success-color); box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);">
+                    <div class="card-body text-center text-white">
+                        <i class="bi bi-rocket-takeoff" style="font-size: 3rem; text-shadow: 0 0 15px rgba(255,255,255,0.8); animation: float 2s ease-in-out infinite;"></i>
+                        <h2 class="mt-3 mb-2" style="font-weight: 900; font-size: 2.5rem;">{{ spams.values() | selectattr('status', 'equalto', 'active') | list | length }}</h2>
+                        <p class="mb-0" style="font-weight: 700; font-size: 1.1rem;">🚀 ACTIVE ATTACKS</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="background: linear-gradient(135deg, var(--danger-color), #e63946); border: 2px solid var(--danger-color); box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);">
+                    <div class="card-body text-center text-white">
+                        <i class="bi bi-shield-x" style="font-size: 3rem; text-shadow: 0 0 15px rgba(255,255,255,0.8); animation: float 2s ease-in-out infinite 0.5s;"></i>
+                        <h2 class="mt-3 mb-2" style="font-weight: 900; font-size: 2.5rem;">{{ spams.values() | selectattr('status', 'equalto', 'stopped') | list | length }}</h2>
+                        <p class="mb-0" style="font-weight: 700; font-size: 1.1rem;">🛑 TERMINATED</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="background: linear-gradient(135deg, var(--info-color), #2f3542); border: 2px solid var(--info-color); box-shadow: 0 10px 30px rgba(55, 66, 250, 0.3);">
+                    <div class="card-body text-center text-white">
+                        <i class="bi bi-collection" style="font-size: 3rem; text-shadow: 0 0 15px rgba(255,255,255,0.8); animation: float 2s ease-in-out infinite 1s;"></i>
+                        <h2 class="mt-3 mb-2" style="font-weight: 900; font-size: 2.5rem;">{{ spams | length }}</h2>
+                        <p class="mb-0" style="font-weight: 700; font-size: 1.1rem;">📊 TOTAL MISSIONS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <a href="{{ url_for('spam_vip') }}" class="btn btn-success btn-custom">
+                    <i class="bi bi-plus-circle"></i> Start New Spam
+                </a>
+                <a href="{{ url_for('stop_spam') }}" class="btn btn-danger btn-custom">
+                    <i class="bi bi-stop-circle"></i> Stop Spam
+                </a>
+            </div>
+            <div class="col-md-6 text-end">
+                {% if spams %}
+                <div class="btn-group me-2" role="group">
+                    {% if spams.values() | selectattr('status', 'equalto', 'stopped') | list | length > 0 %}
+                    <form method="POST" action="{{ url_for('clear_stopped') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-warning btn-custom btn-sm" onclick="return confirm('Are you sure you want to clear all stopped sessions?')" title="Clear only stopped sessions">
+                            <i class="bi bi-trash"></i> Clear Stopped
+                        </button>
+                    </form>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('clear_all') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-custom btn-sm" onclick="return confirm('⚠️ WARNING: This will delete ALL sessions (active and stopped)!\n\nAre you sure you want to continue?')" title="Clear all sessions">
+                            <i class="bi bi-trash-fill"></i> Clear All
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ url_for('create_data_backup') }}" style="display: inline;">
+                        <button type="submit" class="btn btn-info btn-custom btn-sm" title="Create backup of data">
+                            <i class="bi bi-download"></i> Backup
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary btn-custom" onclick="refreshList()">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                    </button>
+                    <button class="btn btn-outline-info btn-custom" onclick="showDataStats()">
+                        <i class="bi bi-info-circle"></i> Data Info
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spam List -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-table"></i> Spam Sessions</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if spams %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><i class="bi bi-key"></i> Session ID</th>
+                                <th><i class="bi bi-controller"></i> Free Fire UID</th>
+                                <th><i class="bi bi-tag"></i> Type</th>
+                                <th><i class="bi bi-circle"></i> Status</th>
+                                <th><i class="bi bi-clock"></i> Started At</th>
+                                <th><i class="bi bi-clock-history"></i> Stopped At</th>
+                                <th><i class="bi bi-gear"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for uid, spam in spams.items() %}
+                            <tr>
+                                <td>
+                                    <code class="text-primary">{{ uid[:15] }}{% if uid|length > 15 %}...{% endif %}</code>
+                                    <button class="btn btn-sm btn-outline-secondary ms-1" onclick="copyToClipboard('{{ uid }}')" title="Copy Session ID">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <code class="text-success fw-bold">{{ spam.target_uid }}</code>
+                                    <button class="btn btn-sm btn-outline-success ms-1" onclick="copyToClipboard('{{ spam.target_uid }}')" title="Copy Free Fire UID">
+                                        <i class="bi bi-controller"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-controller"></i> {{ spam.type }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if spam.status == 'active' %}
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-play-circle"></i> Active
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-stop-circle"></i> Stopped
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ spam.started_at }}</small>
+                                </td>
+                                <td>
+                                    {% if spam.get('stopped_at') %}
+                                        <small class="text-muted">{{ spam.stopped_at }}</small>
+                                    {% else %}
+                                        <small class="text-muted">-</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        {% if spam.status == 'active' %}
+                                            <form method="POST" action="{{ url_for('stop_spam') }}" style="display: inline;">
+                                                <input type="hidden" name="uid" value="{{ uid }}">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Stop this Free Fire spam">
+                                                    <i class="bi bi-stop"></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                        <button class="btn btn-sm btn-outline-info" onclick="showDetails('{{ uid }}')" title="View Free Fire spam details">
+                                            <i class="bi bi-info-circle"></i>
+                                        </button>
+                                        <form method="POST" action="{{ url_for('delete_session', session_id=uid) }}" style="display: inline;" onsubmit="return confirmDelete('{{ uid }}', '{{ spam.target_uid }}')">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete this session">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-controller text-muted" style="font-size: 4rem;"></i>
+                    <h4 class="text-muted mt-3">🎮 No Free Fire Spam Sessions</h4>
+                    <p class="text-muted">Start your first Free Fire spam session to see it here.</p>
+                    <a href="{{ url_for('spam_vip') }}" class="btn btn-success btn-custom">
+                        <i class="bi bi-controller"></i> 🚀 Start Free Fire Spam VIP
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-info-circle"></i> Spam Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Stats Modal -->
+<div class="modal fade" id="dataStatsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--info-color), var(--primary-color)); color: white;">
+                <h5 class="modal-title"><i class="bi bi-database"></i> 📊 Data Statistics</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="dataStatsBody">
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading data statistics...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function confirmDelete(sessionId, targetUid) {
+        const shortSessionId = sessionId.length > 15 ? sessionId.substring(0, 15) + '...' : sessionId;
+        return confirm(`Are you sure you want to delete this session?\n\nSession ID: ${shortSessionId}\nFree Fire UID: ${targetUid}\n\nThis action cannot be undone.`);
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            // Show success message
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-white bg-success border-0 position-fixed top-0 end-0 m-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle"></i> UID copied to clipboard!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remove toast after it's hidden
+            toast.addEventListener('hidden.bs.toast', function() {
+                document.body.removeChild(toast);
+            });
+        });
+    }
+
+    function showDetails(uid) {
+        const spam = {{ spams | tojson }};
+        const spamData = spam[uid];
+        
+        const modalBody = document.getElementById('modalBody');
+        modalBody.innerHTML = `
+            <div class="row">
+                <div class="col-sm-4"><strong>UID:</strong></div>
+                <div class="col-sm-8"><code>${uid}</code></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4"><strong>Type:</strong></div>
+                <div class="col-sm-8"><span class="badge bg-primary">${spamData.type}</span></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4"><strong>Status:</strong></div>
+                <div class="col-sm-8">
+                    <span class="badge bg-${spamData.status === 'active' ? 'success' : 'danger'}">
+                        ${spamData.status.toUpperCase()}
+                    </span>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4"><strong>Started:</strong></div>
+                <div class="col-sm-8">${spamData.started_at}</div>
+            </div>
+            ${spamData.stopped_at ? `
+            <hr>
+            <div class="row">
+                <div class="col-sm-4"><strong>Stopped:</strong></div>
+                <div class="col-sm-8">${spamData.stopped_at}</div>
+            </div>
+            ` : ''}
+
+        `;
+        
+        const modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+        modal.show();
+    }
+
+    function refreshList() {
+        location.reload();
+    }
+
+    function showDataStats() {
+        const modal = new bootstrap.Modal(document.getElementById('dataStatsModal'));
+        modal.show();
+
+        // Load data statistics
+        fetch('/data_stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const stats = data.stats;
+                    document.getElementById('dataStatsBody').innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3" style="background: rgba(0, 212, 170, 0.1); border: 2px solid var(--success-color);">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-database" style="font-size: 2rem; color: var(--success-color);"></i>
+                                        <h4 class="mt-2" style="color: var(--success-color);">${stats.total_sessions}</h4>
+                                        <p class="mb-0">Total Sessions</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3" style="background: rgba(255, 71, 87, 0.1); border: 2px solid var(--danger-color);">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-play-circle" style="font-size: 2rem; color: var(--success-color);"></i>
+                                        <h4 class="mt-2" style="color: var(--success-color);">${stats.active_sessions}</h4>
+                                        <p class="mb-0">Active Sessions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3" style="background: rgba(255, 71, 87, 0.1); border: 2px solid var(--danger-color);">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-stop-circle" style="font-size: 2rem; color: var(--danger-color);"></i>
+                                        <h4 class="mt-2" style="color: var(--danger-color);">${stats.stopped_sessions}</h4>
+                                        <p class="mb-0">Stopped Sessions</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3" style="background: rgba(55, 66, 250, 0.1); border: 2px solid var(--info-color);">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-file-earmark-text" style="font-size: 2rem; color: var(--info-color);"></i>
+                                        <h4 class="mt-2" style="color: var(--info-color);">${stats.file_size_kb} KB</h4>
+                                        <p class="mb-0">Data File Size</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info">
+                            <h6><i class="bi bi-info-circle"></i> File Information:</h6>
+                            <ul class="mb-0">
+                                <li><strong>File:</strong> ${stats.data_file}</li>
+                                <li><strong>Size:</strong> ${stats.file_size_bytes} bytes (${stats.file_size_kb} KB)</li>
+                                <li><strong>Last Modified:</strong> ${stats.last_modified}</li>
+                            </ul>
+                        </div>
+                        <div class="text-center">
+                            <div class="alert alert-success">
+                                <i class="bi bi-check-circle"></i> <strong>Data Status:</strong> All data is automatically saved to JSON file for persistence!
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('dataStatsBody').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle"></i> Error loading data statistics: ${data.message}
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                document.getElementById('dataStatsBody').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Error loading data statistics: ${error.message}
+                    </div>
+                `;
+            });
+    }
+
+    // Auto-refresh every 30 seconds with visual indicator
+    let refreshInterval = setInterval(function() {
+        // Only refresh if no modal is open
+        if (!document.querySelector('.modal.show')) {
+            showRefreshIndicator();
+            setTimeout(refreshList, 1000);
+        }
+    }, 30000);
+
+    function showRefreshIndicator() {
+        const indicator = document.createElement('div');
+        indicator.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Refreshing...';
+        indicator.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            z-index: 9999;
+            animation: slideIn 0.5s ease;
+        `;
+        document.body.appendChild(indicator);
+
+        setTimeout(() => {
+            indicator.style.animation = 'slideOut 0.5s ease';
+            setTimeout(() => indicator.remove(), 500);
+        }, 2000);
+    }
+
+    // Add animations and effects
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+
+            @keyframes pulse-glow {
+                0%, 100% { box-shadow: 0 0 5px var(--primary-color); }
+                50% { box-shadow: 0 0 25px var(--primary-color), 0 0 50px var(--primary-color); }
+            }
+
+            .table tbody tr {
+                transition: all 0.3s ease;
+            }
+
+            .table tbody tr:hover {
+                transform: scale(1.02);
+                background: rgba(255, 107, 53, 0.2) !important;
+                box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            }
+
+            .btn-group .btn {
+                transition: all 0.3s ease;
+            }
+
+            .btn-group .btn:hover {
+                transform: translateY(-2px) scale(1.1);
+                z-index: 10;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add hover effects to stat cards
+        const statCards = document.querySelectorAll('.row .card');
+        statCards.forEach((card, index) => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.05)';
+                this.style.zIndex = '10';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.zIndex = '1';
+            });
+        });
+
+        // Add typing effect to table headers
+        const headers = document.querySelectorAll('th');
+        headers.forEach((header, index) => {
+            setTimeout(() => {
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(-20px)';
+                header.style.transition = 'all 0.5s ease';
+
+                setTimeout(() => {
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                }, 100);
+            }, index * 100);
+        });
+
+        // Add particle effect on button clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.btn') || e.target.closest('.btn')) {
+                createClickEffect(e);
+            }
+        });
+    });
+
+    function createClickEffect(e) {
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+            z-index: 1000;
+        `;
+
+        const rect = e.target.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+
+        e.target.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    // Add ripple animation
+    const rippleStyle = document.createElement('style');
+    rippleStyle.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(rippleStyle);
+</script>
+{% endblock %}

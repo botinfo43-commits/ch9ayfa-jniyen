@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Spam Control Panel{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --accent-color: #ffb700;
+            --dark-color: #1a1a2e;
+            --darker-color: #16213e;
+            --light-color: #eee;
+            --success-color: #00d4aa;
+            --danger-color: #ff4757;
+            --warning-color: #ffa502;
+            --info-color: #3742fa;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-color) 0%, var(--darker-color) 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--light-color);
+        }
+
+        .navbar {
+            background: rgba(26, 26, 46, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .navbar-brand {
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--primary-color) !important;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        .nav-link {
+            color: var(--light-color) !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            color: var(--light-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px 20px 0 0 !important;
+            border: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .btn-custom {
+            border-radius: 50px;
+            padding: 12px 35px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-custom:hover::before {
+            left: 100%;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #00a085);
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #e63946);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color), #2f3542);
+            box-shadow: 0 8px 25px rgba(55, 66, 250, 0.3);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(55, 66, 250, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #ff7f00);
+            box-shadow: 0 8px 25px rgba(255, 165, 2, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 165, 2, 0.4);
+        }
+
+        .alert {
+            border-radius: 15px;
+            border: none;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: rgba(0, 212, 170, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--light-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(238, 238, 238, 0.7);
+        }
+
+        .form-label {
+            color: var(--light-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            color: var(--light-color);
+        }
+
+        .table-dark {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .table-hover tbody tr:hover {
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            color: var(--light-color);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--primary-color);
+        }
+
+        /* Animations */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color); }
+            100% { box-shadow: 0 0 5px var(--primary-color); }
+        }
+
+        .glow {
+            animation: glow 2s infinite;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 26, 46, 0.95) !important;
+            border-top: 2px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="bi bi-controller"></i> 🔥 Free Fire Spam Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">
+                            <i class="bi bi-house"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('spam_vip') }}">
+                            <i class="bi bi-controller"></i> Start FF Spam
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('stop_spam') }}">
+                            <i class="bi bi-stop-circle"></i> Stop FF Spam
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('spam_list') }}">
+                            <i class="bi bi-list-ul"></i> FF Spam List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('developer_info') }}">
+                            <i class="bi bi-code-slash"></i> Developers
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-4 mt-5" style="border-top: 3px solid var(--primary-color); background: linear-gradient(135deg, var(--dark-color), var(--darker-color)) !important;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <p class="mb-1" style="font-weight: 600;">&copy; 2024 Free Fire Spam Master</p>
+                    <small class="text-muted">Built with Flask & Bootstrap</small>
+                    <div class="mt-1">
+                        <small style="color: var(--success-color);">
+                            <i class="bi bi-database"></i> Data Auto-Saved
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="text-center">
+                            <i class="bi bi-code-slash" style="font-size: 2rem; color: var(--primary-color);"></i>
+                            <div style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">DEV JNIYEN</div>
+                            <small style="color: var(--accent-color);">Lead Developer</small>
+                            <div class="mt-1">
+                                <a href="https://t.me/dev_jniyen" target="_blank" class="btn btn-sm" style="background: var(--primary-color); color: white; border-radius: 15px; font-size: 0.8rem;">
+                                    <i class="bi bi-telegram"></i> Telegram
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center mx-3">
+                            <i class="bi bi-heart-fill" style="color: var(--danger-color); font-size: 1.5rem; animation: pulse 2s infinite;"></i>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-laptop" style="font-size: 2rem; color: var(--secondary-color);"></i>
+                            <div style="font-weight: 800; color: var(--secondary-color); font-size: 1.1rem;">DEV CH9AYFA</div>
+                            <small style="color: var(--accent-color);">Co-Developer</small>
+                            <div class="mt-1">
+                                <a href="https://t.me/CH9AYFAX1" target="_blank" class="btn btn-sm" style="background: var(--secondary-color); color: white; border-radius: 15px; font-size: 0.8rem;">
+                                    <i class="bi bi-telegram"></i> Telegram
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ url_for('developer_info') }}" class="btn btn-outline-light btn-sm" style="border-color: var(--primary-color); color: var(--primary-color);">
+                            <i class="bi bi-info-circle"></i> Dev Info
+                        </a>
+                        <button class="btn btn-outline-light btn-sm" onclick="showDevCredits()" style="border-color: var(--secondary-color); color: var(--secondary-color);">
+                            <i class="bi bi-award"></i> Credits
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Developer Credits Modal -->
+    <div class="modal fade" id="devCreditsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                    <h5 class="modal-title"><i class="bi bi-award-fill"></i> 🏆 Developer Credits</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100" style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1)); border: 2px solid var(--primary-color);">
+                                <div class="card-body">
+                                    <i class="bi bi-person-badge" style="font-size: 4rem; color: var(--primary-color);"></i>
+                                    <h3 class="mt-3" style="color: var(--primary-color); font-weight: 900;">DEV JNIYEN</h3>
+                                    <p class="text-muted mb-3">🚀 Lead Developer & Architect</p>
+                                    <div class="mb-3">
+                                        <span class="badge me-2" style="background: var(--primary-color);">Python</span>
+                                        <span class="badge me-2" style="background: var(--success-color);">Flask</span>
+                                        <span class="badge me-2" style="background: var(--info-color);">JavaScript</span>
+                                        <span class="badge" style="background: var(--warning-color);">UI/UX</span>
+                                    </div>
+                                    <p class="small">
+                                        💡 Mastermind behind the Free Fire spam system<br>
+                                        🎨 Created the stunning cyber gaming interface<br>
+                                        ⚡ Optimized for maximum performance
+                                    </p>
+                                    <div class="mt-3">
+                                        <a href="https://t.me/dev_jniyen" target="_blank" class="btn btn-sm" style="background: var(--primary-color); color: white; border-radius: 20px;">
+                                            <i class="bi bi-telegram"></i> Contact on Telegram
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100" style="background: linear-gradient(135deg, rgba(247, 147, 30, 0.1), rgba(255, 183, 0, 0.1)); border: 2px solid var(--secondary-color);">
+                                <div class="card-body">
+                                    <i class="bi bi-person-gear" style="font-size: 4rem; color: var(--secondary-color);"></i>
+                                    <h3 class="mt-3" style="color: var(--secondary-color); font-weight: 900;">DEV CH9AYFA</h3>
+                                    <p class="text-muted mb-3">🛠️ Co-Developer & Systems Engineer</p>
+                                    <div class="mb-3">
+                                        <span class="badge me-2" style="background: var(--secondary-color);">Backend</span>
+                                        <span class="badge me-2" style="background: var(--danger-color);">Security</span>
+                                        <span class="badge me-2" style="background: var(--info-color);">APIs</span>
+                                        <span class="badge" style="background: var(--success-color);">Testing</span>
+                                    </div>
+                                    <p class="small">
+                                        🔧 Expert in system optimization<br>
+                                        🔒 Enhanced security protocols<br>
+                                        📡 Advanced API development
+                                    </p>
+                                    <div class="mt-3">
+                                        <a href="https://t.me/CH9AYFAX1" target="_blank" class="btn btn-sm" style="background: var(--secondary-color); color: white; border-radius: 20px;">
+                                            <i class="bi bi-telegram"></i> Contact on Telegram
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <div class="alert alert-info">
+                            <h5><i class="bi bi-lightbulb-fill"></i> 💎 Premium Development Team</h5>
+                            <p class="mb-0">
+                                Together, <strong>DEV JNIYEN</strong> and <strong>DEV CH9AYFA</strong> created the ultimate Free Fire spam solution with cutting-edge technology and innovative design!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Developer credits modal
+        function showDevCredits() {
+            const modal = new bootstrap.Modal(document.getElementById('devCreditsModal'));
+            modal.show();
+        }
+
+        // Add pulse animation for heart
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add developer signature effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const devNames = document.querySelectorAll('footer [style*="font-weight: 800"]');
+            devNames.forEach((name, index) => {
+                name.addEventListener('mouseenter', function() {
+                    this.style.textShadow = '0 0 10px currentColor';
+                    this.style.transform = 'scale(1.1)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+
+                name.addEventListener('mouseleave', function() {
+                    this.style.textShadow = 'none';
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

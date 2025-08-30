@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Spam Control Panel{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header text-center py-4">
+                {% if action == 'spam_vip' %}
+                    <div class="mb-3">
+                        <i class="bi bi-rocket-takeoff" style="font-size: 4rem; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.8); animation: float 2s ease-in-out infinite;"></i>
+                    </div>
+                    <h2 class="mt-2 mb-0" style="font-weight: 900; text-shadow: 0 0 10px rgba(255,255,255,0.5);">
+                        🚀 LAUNCH SPAM ATTACK 🚀
+                    </h2>
+                    <p class="mb-0 mt-2" style="font-size: 1.1rem; opacity: 0.9;">Initiate VIP Spam Operation</p>
+                {% else %}
+                    <div class="mb-3">
+                        <i class="bi bi-shield-x" style="font-size: 4rem; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.8); animation: float 2s ease-in-out infinite;"></i>
+                    </div>
+                    <h2 class="mt-2 mb-0" style="font-weight: 900; text-shadow: 0 0 10px rgba(255,255,255,0.5);">
+                        🛑 TERMINATE MISSION 🛑
+                    </h2>
+                    <p class="mb-0 mt-2" style="font-size: 1.1rem; opacity: 0.9;">Emergency Shutdown Protocol</p>
+                {% endif %}
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% if action == 'spam_vip' %}
+                    <!-- Free Fire UID Input -->
+                    <div class="mb-4">
+                        <label for="target_uid" class="form-label" style="font-size: 1.2rem; color: var(--primary-color);">
+                            <i class="bi bi-crosshair"></i> 🎯 TARGET FREE FIRE UID
+                        </label>
+                        <div class="position-relative">
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   id="target_uid"
+                                   name="target_uid"
+                                   placeholder="🎮 Enter Free Fire UID (9-12 digits)"
+                                   pattern="[0-9]{9,12}"
+                                   maxlength="12"
+                                   required
+                                   style="font-size: 1.3rem; font-weight: 700; text-align: center; padding: 20px;">
+                            <div class="position-absolute top-50 end-0 translate-middle-y me-3">
+                                <i class="bi bi-crosshair text-danger" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                        <div class="form-text mt-3 p-3 rounded" style="background: rgba(255, 107, 53, 0.1); border: 1px solid var(--primary-color);">
+                            <i class="bi bi-bullseye text-warning"></i> <strong>TARGET LOCKED:</strong> Enter the enemy Free Fire UID to unleash spam attack!
+                        </div>
+                    </div>
+
+                    <!-- Session UID (Optional) -->
+                    <div class="mb-4">
+                        <label for="uid" class="form-label">
+                            <i class="bi bi-key"></i> Session ID (Optional)
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="uid"
+                               name="uid"
+                               placeholder="Leave empty to auto-generate">
+                        <div class="form-text">
+                            <i class="bi bi-lightbulb text-warning"></i> Session ID for tracking (auto-generated if empty)
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Stop Spam Options -->
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-stop-circle"></i> Stop Method
+                        </label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="uid" class="form-label small">Session ID</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="uid"
+                                       name="uid"
+                                       placeholder="Enter session ID">
+                                <small class="form-text text-muted">Use session ID from spam list</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="target_uid" class="form-label small">Free Fire UID</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="target_uid"
+                                       name="target_uid"
+                                       placeholder="Enter Free Fire UID"
+                                       pattern="[0-9]{9,12}"
+                                       maxlength="12">
+                                <small class="form-text text-muted">Direct Free Fire UID</small>
+                            </div>
+                        </div>
+                        <div class="form-text mt-2">
+                            <i class="bi bi-exclamation-triangle text-warning"></i> Provide either Session ID or Free Fire UID
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-3">
+                        {% if action == 'spam_vip' %}
+                            <button type="submit" class="btn btn-success btn-lg btn-custom" style="font-size: 1.3rem; padding: 20px; position: relative; overflow: hidden;">
+                                <span style="position: relative; z-index: 2;">
+                                    <i class="bi bi-rocket-takeoff"></i> 🚀 LAUNCH ATTACK 🚀
+                                </span>
+                                <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite;"></div>
+                            </button>
+                        {% else %}
+                            <button type="submit" class="btn btn-danger btn-lg btn-custom" style="font-size: 1.3rem; padding: 20px; position: relative; overflow: hidden;">
+                                <span style="position: relative; z-index: 2;">
+                                    <i class="bi bi-shield-x"></i> 🛑 TERMINATE NOW 🛑
+                                </span>
+                                <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite;"></div>
+                            </button>
+                        {% endif %}
+
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-custom" style="border: 2px solid var(--primary-color); color: var(--primary-color); font-weight: 700;">
+                            <i class="bi bi-arrow-left-circle"></i> RETURN TO BASE
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Free Fire Info Card -->
+        <div class="card mt-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><i class="bi bi-controller"></i> 🎮 Free Fire Spam Guide</h6>
+            </div>
+            <div class="card-body">
+                {% if action == 'spam_vip' %}
+                    <h6 class="card-title text-success"><i class="bi bi-play-circle"></i> Starting Free Fire Spam VIP</h6>
+                    <ul class="small text-muted mb-3">
+                        <li><strong>Free Fire UID:</strong> Enter the target player's UID (9-12 digits)</li>
+                        <li><strong>Session ID:</strong> Auto-generated for tracking (save it to stop later)</li>
+                        <li><strong>Valid UIDs:</strong> 123456789, 1234567890, 123456789012</li>
+                        <li><strong>Spam Target:</strong> The entered Free Fire UID will receive spam</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> <strong>How it works:</strong> Your Free Fire UID will be sent to the spam service to receive VIP benefits or notifications.
+                    </div>
+                {% else %}
+                    <h6 class="card-title text-danger"><i class="bi bi-stop-circle"></i> Stopping Free Fire Spam</h6>
+                    <ul class="small text-muted mb-3">
+                        <li><strong>Session ID:</strong> Use the session ID from when you started the spam</li>
+                        <li><strong>Free Fire UID:</strong> Or directly enter the Free Fire UID being spammed</li>
+                        <li><strong>Check Spam List:</strong> View active sessions in the <a href="{{ url_for('spam_list') }}">Spam List</a></li>
+                    </ul>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> You need either the session ID or the original Free Fire UID to stop the spam.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Free Fire UID Examples -->
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6 class="card-title"><i class="bi bi-question-circle"></i> Free Fire UID Examples</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <code class="d-block p-2 bg-light rounded text-center">123456789</code>
+                        <small class="text-muted d-block text-center">9 digits</small>
+                    </div>
+                    <div class="col-md-4">
+                        <code class="d-block p-2 bg-light rounded text-center">1234567890</code>
+                        <small class="text-muted d-block text-center">10 digits</small>
+                    </div>
+                    <div class="col-md-4">
+                        <code class="d-block p-2 bg-light rounded text-center">123456789012</code>
+                        <small class="text-muted d-block text-center">12 digits</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Free Fire UID validation
+    function validateFreefireUID(uid) {
+        const cleanUID = uid.replace(/\D/g, ''); // Remove non-digits
+        return cleanUID.length >= 9 && cleanUID.length <= 12;
+    }
+
+    // Format Free Fire UID input (numbers only)
+    function formatFreefireUID(input) {
+        input.value = input.value.replace(/\D/g, '');
+        if (input.value.length > 12) {
+            input.value = input.value.substring(0, 12);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if action == 'spam_vip' %}
+        // Add session ID generator button
+        const sessionInput = document.getElementById('uid');
+        const generateBtn = document.createElement('button');
+        generateBtn.type = 'button';
+        generateBtn.className = 'btn btn-outline-primary btn-sm mt-2';
+        generateBtn.innerHTML = '<i class="bi bi-shuffle"></i> Generate Session ID';
+        generateBtn.onclick = function() {
+            sessionInput.value = 'ff_spam_' + Math.random().toString(36).substr(2, 8);
+        };
+        sessionInput.parentNode.appendChild(generateBtn);
+
+        // Free Fire UID input formatting
+        const targetUIDInput = document.getElementById('target_uid');
+        targetUIDInput.addEventListener('input', function() {
+            formatFreefireUID(this);
+        });
+
+        // Real-time validation
+        targetUIDInput.addEventListener('blur', function() {
+            if (this.value && !validateFreefireUID(this.value)) {
+                this.classList.add('is-invalid');
+                let feedback = this.parentNode.querySelector('.invalid-feedback');
+                if (!feedback) {
+                    feedback = document.createElement('div');
+                    feedback.className = 'invalid-feedback';
+                    this.parentNode.appendChild(feedback);
+                }
+                feedback.textContent = 'Free Fire UID must be 9-12 digits';
+            } else {
+                this.classList.remove('is-invalid');
+                const feedback = this.parentNode.querySelector('.invalid-feedback');
+                if (feedback) feedback.remove();
+            }
+        });
+        {% else %}
+        // Format Free Fire UID input for stop form
+        const targetUIDInput = document.getElementById('target_uid');
+        if (targetUIDInput) {
+            targetUIDInput.addEventListener('input', function() {
+                formatFreefireUID(this);
+            });
+        }
+        {% endif %}
+    });
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        {% if action == 'spam_vip' %}
+        const targetUIDInput = document.getElementById('target_uid');
+        if (!targetUIDInput.value.trim()) {
+            e.preventDefault();
+            alert('Please enter a Free Fire UID to spam.');
+            targetUIDInput.focus();
+            return;
+        }
+        if (!validateFreefireUID(targetUIDInput.value)) {
+            e.preventDefault();
+            alert('Please enter a valid Free Fire UID (9-12 digits).');
+            targetUIDInput.focus();
+            return;
+        }
+        {% else %}
+        const sessionUID = document.getElementById('uid').value.trim();
+        const targetUID = document.getElementById('target_uid').value.trim();
+
+        if (!sessionUID && !targetUID) {
+            e.preventDefault();
+            alert('Please enter either a Session ID or Free Fire UID to stop the spam.');
+            return;
+        }
+
+        if (targetUID && !validateFreefireUID(targetUID)) {
+            e.preventDefault();
+            alert('Please enter a valid Free Fire UID (9-12 digits).');
+            document.getElementById('target_uid').focus();
+            return;
+        }
+        {% endif %}
+    });
+
+    // Add Free Fire themed styling and animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add shimmer animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shimmer {
+                0% { left: -100%; }
+                100% { left: 100%; }
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+
+            @keyframes pulse-border {
+                0%, 100% { border-color: var(--primary-color); }
+                50% { border-color: var(--secondary-color); }
+            }
+
+            .form-control:focus {
+                animation: pulse-border 1s infinite;
+            }
+
+            .btn-custom:hover {
+                transform: translateY(-3px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add typing effect to placeholder
+        const targetInput = document.getElementById('target_uid');
+        if (targetInput) {
+            const originalPlaceholder = targetInput.placeholder;
+            let index = 0;
+            let typing = true;
+
+            setInterval(() => {
+                if (typing) {
+                    targetInput.placeholder = originalPlaceholder.substring(0, index) + '|';
+                    index++;
+                    if (index > originalPlaceholder.length) {
+                        typing = false;
+                        setTimeout(() => {
+                            typing = true;
+                            index = 0;
+                        }, 2000);
+                    }
+                }
+            }, 100);
+        }
+
+        // Add particle effect on button hover
+        const submitBtn = document.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.addEventListener('mouseenter', function() {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        createSparkle(this);
+                    }, i * 50);
+                }
+            });
+        }
+    });
+
+    function createSparkle(element) {
+        const sparkle = document.createElement('div');
+        sparkle.style.position = 'absolute';
+        sparkle.style.width = '4px';
+        sparkle.style.height = '4px';
+        sparkle.style.background = 'var(--accent-color)';
+        sparkle.style.borderRadius = '50%';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '1000';
+
+        const rect = element.getBoundingClientRect();
+        sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+        sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+
+        document.body.appendChild(sparkle);
+
+        const animation = sparkle.animate([
+            { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+            { transform: 'scale(1) rotate(180deg)', opacity: 0 }
+        ], {
+            duration: 1000,
+            easing: 'ease-out'
+        });
+
+        animation.onfinish = () => sparkle.remove();
+    }
+</script>
+{% endblock %}

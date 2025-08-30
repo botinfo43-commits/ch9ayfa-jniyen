@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Free Fire Spam Control Panel - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Welcome Card -->
+        <div class="card mb-4 glow">
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-controller" style="font-size: 5rem; color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color);"></i>
+                </div>
+                <h1 class="card-title mt-3 mb-4" style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    🔥 FREE FIRE SPAM MASTER 🔥
+                </h1>
+                <p class="card-text lead mb-4" style="font-size: 1.3rem; color: var(--light-color);">
+                    💥 Ultimate Free Fire UID Spammer 💥<br>
+                    <span style="color: var(--accent-color);">Dominate the battlefield with VIP spam services!</span>
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <div class="badge fs-6 px-4 py-2" style="background: linear-gradient(135deg, var(--success-color), #00a085);">
+                        <i class="bi bi-lightning-fill"></i> INSTANT ACTIVATION
+                    </div>
+                    <div class="badge fs-6 px-4 py-2" style="background: linear-gradient(135deg, var(--danger-color), #e63946);">
+                        <i class="bi bi-shield-fill"></i> PREMIUM QUALITY
+                    </div>
+                    <div class="badge fs-6 px-4 py-2" style="background: linear-gradient(135deg, var(--info-color), #2f3542);">
+                        <i class="bi bi-rocket-fill"></i> ULTRA FAST
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100" style="border: 2px solid var(--success-color); background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 160, 133, 0.1));">
+                    <div class="card-body text-center d-flex flex-column">
+                        <div class="mb-3">
+                            <i class="bi bi-rocket-takeoff" style="font-size: 4rem; color: var(--success-color); text-shadow: 0 0 15px var(--success-color);"></i>
+                        </div>
+                        <h4 class="card-title mt-2 mb-3" style="color: var(--success-color); font-weight: 800;">
+                            🚀 LAUNCH SPAM ATTACK
+                        </h4>
+                        <p class="card-text flex-grow-1" style="color: var(--light-color); font-weight: 600;">
+                            💥 Unleash devastating spam attacks on Free Fire UIDs!<br>
+                            <span style="color: var(--accent-color);">VIP Premium Service</span>
+                        </p>
+                        <a href="{{ url_for('spam_vip') }}" class="btn btn-success btn-custom mt-auto">
+                            <i class="bi bi-rocket-takeoff"></i> LAUNCH ATTACK
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100" style="border: 2px solid var(--danger-color); background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(230, 57, 70, 0.1));">
+                    <div class="card-body text-center d-flex flex-column">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-x" style="font-size: 4rem; color: var(--danger-color); text-shadow: 0 0 15px var(--danger-color);"></i>
+                        </div>
+                        <h4 class="card-title mt-2 mb-3" style="color: var(--danger-color); font-weight: 800;">
+                            🛑 TERMINATE MISSION
+                        </h4>
+                        <p class="card-text flex-grow-1" style="color: var(--light-color); font-weight: 600;">
+                            🔒 Stop active spam operations instantly!<br>
+                            <span style="color: var(--accent-color);">Emergency Shutdown</span>
+                        </p>
+                        <a href="{{ url_for('stop_spam') }}" class="btn btn-danger btn-custom mt-auto">
+                            <i class="bi bi-shield-x"></i> TERMINATE
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100" style="border: 2px solid var(--info-color); background: linear-gradient(135deg, rgba(55, 66, 250, 0.1), rgba(47, 53, 66, 0.1));">
+                    <div class="card-body text-center d-flex flex-column">
+                        <div class="mb-3">
+                            <i class="bi bi-radar" style="font-size: 4rem; color: var(--info-color); text-shadow: 0 0 15px var(--info-color);"></i>
+                        </div>
+                        <h4 class="card-title mt-2 mb-3" style="color: var(--info-color); font-weight: 800;">
+                            📡 MISSION CONTROL
+                        </h4>
+                        <p class="card-text flex-grow-1" style="color: var(--light-color); font-weight: 600;">
+                            🎯 Monitor all active spam operations!<br>
+                            <span style="color: var(--accent-color);">Real-time Dashboard</span>
+                        </p>
+                        <a href="{{ url_for('spam_list') }}" class="btn btn-info btn-custom mt-auto">
+                            <i class="bi bi-radar"></i> CONTROL CENTER
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Fire Info Card -->
+        <div class="card mt-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-controller"></i> 🎮 How Free Fire Spam Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-1-circle text-success"></i> 🚀 Start Free Fire Spam VIP</h6>
+                        <p class="small text-muted">
+                            Enter a Free Fire UID (9-12 digits) to start spamming with VIP services. The system will generate a session ID for tracking.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-2-circle text-danger"></i> 🛑 Stop Free Fire Spam</h6>
+                        <p class="small text-muted">
+                            Use the session ID or original Free Fire UID to stop the spam service. Check the spam list for active sessions.
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> <strong>Free Fire UID Format:</strong> Valid UIDs are 9-12 digits (e.g., 123456789, 1234567890, 123456789012)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Signature -->
+        <div class="card mt-4" style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(247, 147, 30, 0.05)); border: 2px solid var(--primary-color);">
+            <div class="card-body text-center py-3">
+                <p class="mb-2" style="font-size: 0.9rem; color: var(--light-color); opacity: 0.8;">
+                    💻 Crafted with passion by the elite development team
+                </p>
+                <div class="d-flex justify-content-center align-items-center gap-4">
+                    <div class="text-center">
+                        <span style="font-weight: 800; color: var(--primary-color); font-size: 1.1rem;">DEV JNIYEN</span>
+                        <div style="font-size: 0.8rem; color: var(--accent-color);">Lead Developer</div>
+                        <div class="mt-1">
+                            <a href="https://t.me/dev_jniyen" target="_blank" class="btn btn-sm" style="background: var(--primary-color); color: white; border-radius: 12px; font-size: 0.7rem; padding: 3px 8px;">
+                                <i class="bi bi-telegram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="color: var(--danger-color); font-size: 1.2rem;">❤️</div>
+                    <div class="text-center">
+                        <span style="font-weight: 800; color: var(--secondary-color); font-size: 1.1rem;">DEV CH9AYFA</span>
+                        <div style="font-size: 0.8rem; color: var(--accent-color);">Co-Developer</div>
+                        <div class="mt-1">
+                            <a href="https://t.me/CH9AYFAX1" target="_blank" class="btn btn-sm" style="background: var(--secondary-color); color: white; border-radius: 12px; font-size: 0.7rem; padding: 3px 8px;">
+                                <i class="bi bi-telegram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+
+    // Add particle effect background
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+        particle.style.background = 'var(--primary-color)';
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '1';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.top = '-10px';
+        particle.style.opacity = '0.7';
+        particle.style.boxShadow = '0 0 10px var(--primary-color)';
+
+        document.body.appendChild(particle);
+
+        const animation = particle.animate([
+            { transform: 'translateY(0px)', opacity: 0.7 },
+            { transform: `translateY(${window.innerHeight + 20}px)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 3000 + 2000,
+            easing: 'linear'
+        });
+
+        animation.onfinish = () => particle.remove();
+    }
+
+    // Create particles periodically
+    setInterval(createParticle, 300);
+
+    // Add hover effects to cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.transition = 'all 0.3s ease';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add pulse effect to main title
+        const title = document.querySelector('h1');
+        if (title) {
+            setInterval(() => {
+                title.style.textShadow = '0 0 20px var(--primary-color), 0 0 40px var(--primary-color)';
+                setTimeout(() => {
+                    title.style.textShadow = 'none';
+                }, 1000);
+            }, 3000);
+        }
+
+        // Add floating animation to icons
+        const icons = document.querySelectorAll('.bi-rocket-takeoff, .bi-shield-x, .bi-radar');
+        icons.forEach((icon, index) => {
+            icon.style.animation = `float 3s ease-in-out infinite ${index * 0.5}s`;
+        });
+    });
+
+    // Add floating keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 25px var(--primary-color), 0 0 50px var(--primary-color); }
+        }
+
+        .glow {
+            animation: pulse-glow 2s infinite;
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}
