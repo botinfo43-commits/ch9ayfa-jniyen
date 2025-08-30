@@ -1,0 +1,30 @@
+{
+  "name": "Free Fire Spam Master",
+  "description": "Ultimate Free Fire UID Spammer with VIP services and modern cyber gaming interface",
+  "keywords": ["flask", "python", "free-fire", "spam", "gaming", "api"],
+  "website": "https://github.com/dev-jniyen/free-fire-spam-master",
+  "repository": "https://github.com/dev-jniyen/free-fire-spam-master",
+  "logo": "https://img.icons8.com/color/96/000000/fire-element.png",
+  "success_url": "/",
+  "env": {
+    "SECRET_KEY": {
+      "description": "A secret key for Flask sessions",
+      "generator": "secret"
+    },
+    "FLASK_ENV": {
+      "description": "Flask environment",
+      "value": "production"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
